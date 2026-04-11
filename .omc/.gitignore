@@ -1,0 +1,7 @@
+# OMC runtime state — never commit these
+state/
+notepad.md
+research/
+logs/
+prd.json
+progress.txt

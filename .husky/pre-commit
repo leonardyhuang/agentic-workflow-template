@@ -1,0 +1,47 @@
+#!/bin/sh
+set -e
+
+# =============================================================================
+# Generic pre-commit gates — apply to any project regardless of stack.
+# Add project-specific gates in the sections marked below.
+# =============================================================================
+
+echo "▶ Checking documentation hygiene..."
+CHANGED=$(git diff --cached --name-only)
+
+# Warn when source files change without a docs update.
+# Adjust the KEY_CHANGED pattern to match your project's source paths.
+KEY_CHANGED=$(echo "$CHANGED" | grep -vE "CLAUDE\.md|README\.md|TECHNICAL_DEBT\.md|\.gitignore|\.husky|package" || true)
+DOC_CHANGED=$(echo "$CHANGED" | grep -E "CLAUDE\.md|README\.md|TECHNICAL_DEBT\.md" || true)
+
+if [ -n "$KEY_CHANGED" ] && [ -z "$DOC_CHANGED" ]; then
+    echo "⚠️  Key source files changed without a CLAUDE.md/README.md update."
+    echo "   Changed: $(echo "$KEY_CHANGED" | tr '\n' ' ')"
+    echo "   Confirm documentation is still accurate before merging."
+fi
+
+# =============================================================================
+# PROJECT-SPECIFIC GATES
+# Add your stack's lint, type-check, and test gates below.
+# Each gate should echo a description, run the check, and exit 1 on failure.
+#
+# Examples:
+#
+# echo "▶ Linting..."
+# npm run lint
+#
+# echo "▶ Type checking..."
+# npm run typecheck
+#
+# echo "▶ Running tests..."
+# npm test
+#
+# echo "▶ Running Rust tests..."
+# if command -v cargo >/dev/null 2>&1; then
+#     (cd path/to/crate && cargo test --quiet 2>&1)
+# else
+#     echo "  ⚠ cargo not found — skipping Rust tests"
+# fi
+# =============================================================================
+
+echo "✅ Pre-commit checks passed"

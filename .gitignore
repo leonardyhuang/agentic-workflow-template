@@ -1,0 +1,72 @@
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vim/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
+vendor/
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+target/
+*.o
+*.a
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Package manager locks (keep whichever your team uses, remove others)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# OMC state (committed config kept; runtime state excluded)
+.omc/state/
+.omc/notepad.md
+.omc/research/
+.omc/logs/

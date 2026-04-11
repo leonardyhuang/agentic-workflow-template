@@ -56,7 +56,11 @@ npm install
 # Open Claude Code and say: "setup omc"
 ```
 
+> **Non-Node projects:** even if your stack isn't Node.js, run `npm install` once after cloning — it only installs husky to wire up the pre-commit gates. You can swap husky for your language's native hook manager later.
+
 Update `package.json` with your project name, then replace placeholder content in `CLAUDE.md` and this `README.md` with your project specifics.
+
+> **Template maintainer:** to enable the **"Use this template"** button on GitHub, go to your repo **Settings → General → Template repository** and check the box.
 
 ---
 

@@ -68,6 +68,7 @@ coverage/
 
 # OMC state (committed config kept; runtime state excluded)
 .omc/state/
+.omc/sessions/
 .omc/notepad.md
 .omc/research/
 .omc/logs/

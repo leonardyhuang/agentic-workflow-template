@@ -1,5 +1,6 @@
 # OMC runtime state — never commit these
 state/
+sessions/
 notepad.md
 research/
 logs/

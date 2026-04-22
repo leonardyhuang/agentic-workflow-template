@@ -68,7 +68,7 @@ Add every new key to the locale file before merging. All translation calls must 
 |----------------|-------|-------------|
 | Quick lookups, simple ops | `haiku` | File reads, status checks, simple searches |
 | Standard work | `sonnet` | Most implementation, standard refactors |
-| Architecture, deep analysis | `opus` | Complex debugging, security review, strategic decisions |
+| Architecture, deep analysis | `opus` | **Must use** for: complex debugging, security review, strategic decisions, architecture changes |
 
 ---
 
@@ -91,7 +91,7 @@ Work directly for:
 
 - **Regression first**: write a failing test reproducing the bug *before* touching the implementation.
 - 100% coverage for happy paths and critical edge cases (nulls, race conditions, network failures).
-- Run all relevant tests before marking any task complete.
+- Run all relevant tests before marking any task complete or reporting success to the user.
 - Use `run_in_background: true` for long-running test suites.
 
 ---
@@ -121,7 +121,7 @@ When items are fixed, remove them.
 
 > **Why this exists**: diff-scoped code review catches what changed, not whether domain invariants still hold. These gates make invariants machine-checkable and domain-scoped.
 >
-> **Machine-enforced**: `.husky/pre-commit` runs the gates below automatically on every `git commit`. When adding a gate here, add the executable version to the hook too — and vice versa.
+> **Machine-enforced when populated**: `.husky/pre-commit` runs the gates below automatically on every `git commit`. When adding a gate here, add the executable version to the hook too — and vice versa. An empty gate table means no invariants are currently enforced.
 
 ### Template: Adding a New Gate
 
@@ -153,17 +153,19 @@ These catch drift that accumulates across many small changes — add project-spe
 
 ## Git & Deployment
 
-- **Never commit or push without explicit instruction.**
-- **Never** `git push --force`, `reset --hard`, or `checkout .` without explicit instruction.
-- **Never** skip hooks (`--no-verify`).
-- Confirm before any destructive operation (file deletion, branch -D, etc.).
+> **Hard stops — no exceptions, no implicit authorisation:**
+> - Never commit or push without an explicit instruction in the current message.
+> - Never `git push --force`, `reset --hard`, or `checkout .`.
+> - Never skip hooks (`--no-verify`).
+> - Never delete files, branches, or database tables without explicit confirmation.
+
 - Prefer creating a new commit rather than amending.
 
 ---
 
 ## Security
 
-- After any changes to authentication, payment flows, or external data ingestion, run a security review before marking the task complete.
+- After any changes to authentication, payment flows, or external data ingestion, **MUST** run `/oh-my-claudecode:security-reviewer` before marking the task complete — not optional.
 - Pay particular attention to: user input interpolated into queries/commands, `innerHTML` writes, and any new properties written from external data sources.
 - Never commit secrets, tokens, or credentials. Use environment variables. Verify `.gitignore` excludes `.env` files.
 - OWASP Top 10 applies: SQL injection, XSS, CSRF, insecure direct object references.

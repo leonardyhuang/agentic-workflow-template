@@ -76,3 +76,6 @@ coverage/
 .omc/prd.json
 .omc/progress.txt
 .omc/project-memory.json
+
+# Caveman compress backups
+*.original.md

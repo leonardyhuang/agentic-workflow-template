@@ -6,9 +6,9 @@
 
 ## OMC Setup
 
-This project uses [oh-my-claudecode (OMC)](https://github.com/ohmyclaudecode/ohmyclaudecode) for multi-agent orchestration.
+Project uses [oh-my-claudecode (OMC)](https://github.com/ohmyclaudecode/ohmyclaudecode) for multi-agent orchestration.
 
-To activate: open Claude Code and say **"setup omc"**, or run `/oh-my-claudecode:omc-setup`.
+Activate: open Claude Code, say **"setup omc"**, or run `/oh-my-claudecode:omc-setup`.
 
 ---
 
@@ -16,15 +16,15 @@ To activate: open Claude Code and say **"setup omc"**, or run `/oh-my-claudecode
 
 ### General
 
-- SOLID, DRY. Single Source of Truth — centralised helper functions over duplicate/inline logic.
+- SOLID, DRY. Single Source of Truth — centralised helpers over duplicate/inline logic.
 - Intention-revealing names. Inline comments only for *why*, not *what*. JSDoc/docstrings for complex functions.
 - Small, single-purpose functions. Composition over inheritance.
-- Before proposing fixes for bugs, find the root cause first.
-- Don't add error handling, fallbacks, or validation for scenarios that can't happen. Trust internal code and framework guarantees. Only validate at system boundaries (user input, external APIs).
+- Find root cause before proposing bug fixes.
+- No error handling, fallbacks, or validation for impossible scenarios. Trust internal code and framework guarantees. Validate at system boundaries only (user input, external APIs).
 
 ### Internationalisation (i18n)
 
-Every user-visible string must go through the project's i18n system. No hardcoded text in templates or UI components.
+Every user-visible string must go through project's i18n system. No hardcoded text in templates or UI components.
 
 **Example pattern (adapt to your stack):**
 
@@ -36,13 +36,13 @@ Every user-visible string must go through the project's i18n system. No hardcode
 element.textContent = element.dataset.textKey || 'Fallback';
 ```
 
-Add every new key to the locale file before merging. All translation calls must include a fallback.
+Add every new key to locale file before merging. All translation calls must include fallback.
 
 **Checklist before marking any UI task complete:**
 - [ ] No bare string literals in template output
 - [ ] No hardcoded strings in JS `textContent` / `innerHTML` / `aria-label` writes
-- [ ] All new locale keys added to the default locale file
-- [ ] All translation calls include a fallback value
+- [ ] All new locale keys added to default locale file
+- [ ] All translation calls include fallback value
 
 ### Money / Prices
 
@@ -56,9 +56,9 @@ Add every new key to the locale file before merging. All translation calls must 
 
 ### API / Network Calls
 
-- Use existing queue/debounce patterns for API calls. Exponential backoff for rate limit responses (429).
+- Use existing queue/debounce patterns for API calls. Exponential backoff for 429s.
 - Never surface raw error HTML — use safe JSON fallbacks.
-- Deduplicate in-flight requests for the same resource (cache in-flight promises).
+- Deduplicate in-flight requests for same resource (cache in-flight promises).
 
 ---
 
@@ -76,7 +76,7 @@ Add every new key to the locale file before merging. All translation calls must 
 
 Delegate to specialist agents for:
 - Multi-file changes and refactors
-- Debugging complex issues
+- Complex debugging
 - Code review and verification
 - Planning before implementation
 
@@ -89,16 +89,16 @@ Work directly for:
 
 ## Testing Discipline
 
-- **Regression first**: write a failing test reproducing the bug *before* touching the implementation.
+- **Regression first**: write failing test reproducing bug *before* touching implementation.
 - 100% coverage for happy paths and critical edge cases (nulls, race conditions, network failures).
-- Run all relevant tests before marking any task complete or reporting success to the user.
+- Run all relevant tests before marking task complete or reporting success.
 - Use `run_in_background: true` for long-running test suites.
 
 ---
 
 ## Audit Findings Protocol
 
-Any finding from a code review, domain audit, or targeted sweep that is **not fixed in the same session** must be written to `docs/TECHNICAL_DEBT.md` before the session ends. This is mandatory — verbal acknowledgement in conversation is not sufficient.
+Any finding from code review, domain audit, or targeted sweep **not fixed in same session** must be written to `docs/TECHNICAL_DEBT.md` before session ends. Mandatory — verbal acknowledgement not sufficient.
 
 **Backlog** (features, improvements) → project management tool (Linear, GitHub Issues, etc.)
 **Technical debt** (known code quality gaps, missing tests, process holes) → `docs/TECHNICAL_DEBT.md`
@@ -113,7 +113,7 @@ Format for each entry:
 - **Found**: YYYY-MM-DD
 ```
 
-When items are fixed, remove them.
+Remove items when fixed.
 
 ---
 
@@ -121,12 +121,12 @@ When items are fixed, remove them.
 
 > **Why this exists**: diff-scoped code review catches what changed, not whether domain invariants still hold. These gates make invariants machine-checkable and domain-scoped.
 >
-> **Machine-enforced when populated**: `.husky/pre-commit` runs the gates below automatically on every `git commit`. When adding a gate here, add the executable version to the hook too — and vice versa. An empty gate table means no invariants are currently enforced.
+> **Machine-enforced when populated**: `.husky/pre-commit` runs gates below automatically on every `git commit`. When adding gate here, add executable version to hook too — and vice versa. Empty gate table means no invariants currently enforced.
 
 ### Template: Adding a New Gate
 
-1. Document the invariant here with the bash command to check it.
-2. Add the executable check to `.husky/pre-commit`.
+1. Document invariant here with bash command to check it.
+2. Add executable check to `.husky/pre-commit`.
 3. Both must stay in sync.
 
 **Example gate pattern:**
@@ -143,7 +143,7 @@ fi
 
 ### Periodic Domain Sweeps (run proactively, not just on change)
 
-These catch drift that accumulates across many small changes — add project-specific sweeps here:
+Catch drift accumulating across many small changes — add project-specific sweeps here:
 
 | Sweep | Command / Check |
 |-------|----------------|
@@ -154,19 +154,19 @@ These catch drift that accumulates across many small changes — add project-spe
 ## Git & Deployment
 
 > **Hard stops — no exceptions, no implicit authorisation:**
-> - Never commit or push without an explicit instruction in the current message.
+> - Never commit or push without explicit instruction in current message.
 > - Never `git push --force`, `reset --hard`, or `checkout .`.
 > - Never skip hooks (`--no-verify`).
 > - Never delete files, branches, or database tables without explicit confirmation.
 
-- Prefer creating a new commit rather than amending.
+- Prefer new commit over amending.
 
 ---
 
 ## Security
 
-- After any changes to authentication, payment flows, or external data ingestion, **MUST** run `/oh-my-claudecode:security-reviewer` before marking the task complete — not optional.
-- Pay particular attention to: user input interpolated into queries/commands, `innerHTML` writes, and any new properties written from external data sources.
+- After changes to authentication, payment flows, or external data ingestion, **MUST** run `/oh-my-claudecode:security-reviewer` before marking task complete — not optional.
+- Watch: user input interpolated into queries/commands, `innerHTML` writes, new properties written from external data sources.
 - Never commit secrets, tokens, or credentials. Use environment variables. Verify `.gitignore` excludes `.env` files.
 - OWASP Top 10 applies: SQL injection, XSS, CSRF, insecure direct object references.
 
@@ -174,23 +174,23 @@ These catch drift that accumulates across many small changes — add project-spe
 
 ## Proactive Skill Suggestions
 
-Suggest these at natural moments without waiting to be asked:
+Suggest at natural moments without waiting to be asked:
 
 | Moment | Skill |
 |--------|-------|
-| After a large coding session, before merge | `/oh-my-claudecode:critic` — multi-perspective review |
-| Before starting a complex feature | `/oh-my-claudecode:planner` — deep requirements interview |
+| After large coding session, before merge | `/oh-my-claudecode:critic` — multi-perspective review |
+| Before starting complex feature | `/oh-my-claudecode:planner` — deep requirements interview |
 | Debugging race conditions / timing bugs | `/oh-my-claudecode:tracer` — evidence-driven causal tracing |
-| Before a structural decision | `/oh-my-claudecode:architect` — strategic advisory |
-| After claiming a feature complete | `/oh-my-claudecode:verifier` — evidence-based completion check |
-| When UI/UX work comes up | `/frontend-design` — distinctive interface design |
-| When ready to merge / clean up history | `/oh-my-claudecode:git-master` — atomic commits, rebase |
+| Before structural decision | `/oh-my-claudecode:architect` — strategic advisory |
+| After claiming feature complete | `/oh-my-claudecode:verifier` — evidence-based completion check |
+| UI/UX work | `/frontend-design` — distinctive interface design |
+| Ready to merge / clean up history | `/oh-my-claudecode:git-master` — atomic commits, rebase |
 
 ---
 
 ## Documentation Hygiene
 
-When making changes that affect architecture, conventions, or project structure, **update `CLAUDE.md` and `README.md`** to reflect the new state.
+Changes affecting architecture, conventions, or project structure → **update `CLAUDE.md` and `README.md`**.
 
 ---
 

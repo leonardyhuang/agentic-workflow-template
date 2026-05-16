@@ -11,14 +11,37 @@ CHANGED=$(git diff --cached --name-only)
 
 # Warn when source files change without a docs update.
 # Adjust the KEY_CHANGED pattern to match your project's source paths.
-KEY_CHANGED=$(echo "$CHANGED" | grep -vE "CLAUDE\.md|README\.md|TECHNICAL_DEBT\.md|\.gitignore|\.husky|package" || true)
-DOC_CHANGED=$(echo "$CHANGED" | grep -E "CLAUDE\.md|README\.md|TECHNICAL_DEBT\.md" || true)
+KEY_CHANGED=$(echo "$CHANGED" | grep -vE "CONVENTIONS\.md|AGENTS\.md|README\.md|TECHNICAL_DEBT\.md|\.gitignore|\.husky|package|docs/runbooks|docs/specs" || true)
+DOC_CHANGED=$(echo "$CHANGED" | grep -E "CONVENTIONS\.md|AGENTS\.md|README\.md|TECHNICAL_DEBT\.md|docs/runbooks|docs/specs" || true)
 
 if [ -n "$KEY_CHANGED" ] && [ -z "$DOC_CHANGED" ]; then
-    echo "⚠️  Key source files changed without a CLAUDE.md/README.md update."
+    echo "⚠️  Key source files changed without a CONVENTIONS.md / AGENTS.md / README.md update."
     echo "   Changed: $(echo "$KEY_CHANGED" | tr '\n' ' ')"
     echo "   Confirm documentation is still accurate before merging."
 fi
+
+# =============================================================================
+# AGENTS.md / CONVENTIONS.md region sync check (optional)
+# Uncomment and adapt if your project uses section markers.
+# =============================================================================
+# echo "▶ Checking section marker sync..."
+# AGENTS_REGIONS=$(grep "^// #region" src/main.js | sed 's/.*#region //' | sort || true)
+# DOCS_REGIONS=$(grep -A1 "Major source files use" AGENTS.md | tail -n +3 | head -n 1 || true)
+# [Add actual sync verification logic here]
+
+# =============================================================================
+# Bug-fix test mandate (optional)
+# Uncomment and adapt to enforce: source changes → test changes.
+# =============================================================================
+# echo "▶ Checking test coverage for modified sources..."
+# SRC_CHANGED=$(echo "$CHANGED" | grep -E "^src/.*\.(js|ts|rs|py|go)$" || true)
+# TEST_CHANGED=$(echo "$CHANGED" | grep -E "^(tests?|spec|__tests__)/" || true)
+# if [ -n "$SRC_CHANGED" ] && [ -z "$TEST_CHANGED" ]; then
+#     echo "⚠️  Source files changed without corresponding test changes."
+#     echo "   If this is a bug fix, you MUST add a regression test."
+#     echo "   Changed: $(echo "$SRC_CHANGED" | tr '\n' ' ')"
+#     # exit 1  # Uncomment to make this a hard gate
+# fi
 
 # =============================================================================
 # PROJECT-SPECIFIC GATES

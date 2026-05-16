@@ -66,16 +66,3 @@ coverage/
 # yarn.lock
 # pnpm-lock.yaml
 
-# OMC state (committed config kept; runtime state excluded)
-.omc/state/
-.omc/sessions/
-.omc/notepad.md
-.omc/research/
-.omc/logs/
-.omc/plans/
-.omc/prd.json
-.omc/progress.txt
-.omc/project-memory.json
-
-# Caveman compress backups
-*.original.md

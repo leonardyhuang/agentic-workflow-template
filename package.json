@@ -1,5 +1,6 @@
 {
-    "name": "your-project-name",
+    "name": "agentic-workflow-template",
+    "description": "Template repository for AI-assisted development with agent conventions, review gates, and documentation hygiene",
     "private": true,
     "scripts": {
         "prepare": "husky"

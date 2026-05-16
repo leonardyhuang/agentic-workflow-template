@@ -1,0 +1,10 @@
+# <type>(<scope>): <subject>
+#
+# <body>
+#
+# <footer>
+#
+# Types: feat | fix | docs | style | refactor | test | chore
+# Subject: imperative mood, ≤ 50 chars
+# Body: explain why, not what
+# Footer: Fixes #123 / Relates #456

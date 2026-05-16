@@ -1,14 +1,19 @@
-# [Project Name] — Claude Code Conventions
+# Agentic Workflow Template — Conventions & Deep Contract
 
 [One-line description of what this project does and its tech stack.]
 
 ---
 
-## OMC Setup
+## Agent Setup
 
-Project uses [oh-my-claudecode (OMC)](https://github.com/ohmyclaudecode/ohmyclaudecode) for multi-agent orchestration.
+This project uses AI-assisted development. The primary agent instruction files are:
 
-Activate: open Claude Code, say **"setup omc"**, or run `/oh-my-claudecode:omc-setup`.
+- [`AGENTS.md`](./AGENTS.md) — quick reference, invariants, bug-fix protocol, ambiguity guardrails
+- [`CONVENTIONS.md`](./CONVENTIONS.md) — this file: deep contracts, architecture, standards
+
+**To activate:** point your AI tool at this repository. It should read `AGENTS.md` first, then `CONVENTIONS.md` before any non-trivial work.
+
+> If your team uses an orchestration framework (e.g., [OMC](https://github.com/ohmyclaudecode/ohmyclaudecode) for Claude Code, custom skill registries for Kimi, etc.), configure it to load `AGENTS.md` and `CONVENTIONS.md` as context.
 
 ---
 
@@ -24,7 +29,7 @@ Activate: open Claude Code, say **"setup omc"**, or run `/oh-my-claudecode:omc-s
 
 ### Internationalisation (i18n)
 
-Every user-visible string must go through project's i18n system. No hardcoded text in templates or UI components.
+Every user-visible string must go through the project's i18n system. No hardcoded text in templates or UI components.
 
 **Example pattern (adapt to your stack):**
 
@@ -62,19 +67,19 @@ Add every new key to locale file before merging. All translation calls must incl
 
 ---
 
-## Model Routing
+## Model / Agent Routing
 
-| Task complexity | Model | When to use |
-|----------------|-------|-------------|
-| Quick lookups, simple ops | `haiku` | File reads, status checks, simple searches |
-| Standard work | `sonnet` | Most implementation, standard refactors |
-| Architecture, deep analysis | `opus` | **Must use** for: complex debugging, security review, strategic decisions, architecture changes |
+| Task complexity | Strategy | When to use |
+|-----------------|----------|-------------|
+| Quick lookups, simple ops | Lightweight model / direct execution | File reads, status checks, simple searches |
+| Standard work | Capable model / standard agent | Most implementation, standard refactors |
+| Architecture, deep analysis | Strongest model / specialist agent | **Must use** for: complex debugging, security review, strategic decisions, architecture changes |
 
 ---
 
 ## Delegation Rules
 
-Delegate to specialist agents for:
+Delegate to specialist agents or tools for:
 - Multi-file changes and refactors
 - Complex debugging
 - Code review and verification
@@ -90,9 +95,11 @@ Work directly for:
 ## Testing Discipline
 
 - **Regression first**: write failing test reproducing bug *before* touching implementation.
+- **Extract-before-embed**: any logic needing unit tests must be extracted into an explicit-param pure function *before* being embedded inside an event listener / MutationObserver / async callback / framework hook. Tests import it directly; never copy inline logic into tests.
+  > If a function can only exist as a closure, that is a signal to extract it.
 - 100% coverage for happy paths and critical edge cases (nulls, race conditions, network failures).
 - Run all relevant tests before marking task complete or reporting success.
-- Use `run_in_background: true` for long-running test suites.
+- Use background execution for long-running test suites.
 
 ---
 
@@ -100,7 +107,7 @@ Work directly for:
 
 Any finding from code review, domain audit, or targeted sweep **not fixed in same session** must be written to `docs/TECHNICAL_DEBT.md` before session ends. Mandatory — verbal acknowledgement not sufficient.
 
-**Backlog** (features, improvements) → project management tool (Linear, GitHub Issues, etc.)
+**Backlog** (features, improvements) → project management tool (Linear, GitHub Issues, etc.)  
 **Technical debt** (known code quality gaps, missing tests, process holes) → `docs/TECHNICAL_DEBT.md`
 
 Format for each entry:
@@ -121,7 +128,7 @@ Remove items when fixed.
 
 > **Why this exists**: diff-scoped code review catches what changed, not whether domain invariants still hold. These gates make invariants machine-checkable and domain-scoped.
 >
-> **Machine-enforced when populated**: `.husky/pre-commit` runs gates below automatically on every `git commit`. When adding gate here, add executable version to hook too — and vice versa. Empty gate table means no invariants currently enforced.
+> **Machine-enforced when populated**: `.husky/pre-commit` runs gates below automatically on every `git commit`. When adding a gate here, add executable version to hook too — and vice versa. Empty gate table means no invariants currently enforced.
 
 ### Template: Adding a New Gate
 
@@ -141,12 +148,19 @@ if [ -n "$HARDCODED_PRICES" ]; then
 fi
 ```
 
+### Current Gates
+
+| Gate | Command / Check |
+|------|-----------------|
+| Documentation hygiene | Source changes → docs must also change (see `.husky/pre-commit`) |
+| [Add gate] | [Add command] |
+
 ### Periodic Domain Sweeps (run proactively, not just on change)
 
 Catch drift accumulating across many small changes — add project-specific sweeps here:
 
 | Sweep | Command / Check |
-|-------|----------------|
+|-------|-----------------|
 | [Add sweep name] | [Add command] |
 
 ---
@@ -160,37 +174,28 @@ Catch drift accumulating across many small changes — add project-specific swee
 > - Never delete files, branches, or database tables without explicit confirmation.
 
 - Prefer new commit over amending.
+- Write atomic commits with clear, descriptive messages.
 
 ---
 
 ## Security
 
-- After changes to authentication, payment flows, or external data ingestion, **MUST** run `/oh-my-claudecode:security-reviewer` before marking task complete — not optional.
+- After changes to authentication, payment flows, or external data ingestion, **MUST** run a security review before marking task complete — not optional.
 - Watch: user input interpolated into queries/commands, `innerHTML` writes, new properties written from external data sources.
 - Never commit secrets, tokens, or credentials. Use environment variables. Verify `.gitignore` excludes `.env` files.
 - OWASP Top 10 applies: SQL injection, XSS, CSRF, insecure direct object references.
 
 ---
 
-## Proactive Skill Suggestions
-
-Suggest at natural moments without waiting to be asked:
-
-| Moment | Skill |
-|--------|-------|
-| After large coding session, before merge | `/oh-my-claudecode:critic` — multi-perspective review |
-| Before starting complex feature | `/oh-my-claudecode:planner` — deep requirements interview |
-| Debugging race conditions / timing bugs | `/oh-my-claudecode:tracer` — evidence-driven causal tracing |
-| Before structural decision | `/oh-my-claudecode:architect` — strategic advisory |
-| After claiming feature complete | `/oh-my-claudecode:verifier` — evidence-based completion check |
-| UI/UX work | `/frontend-design` — distinctive interface design |
-| Ready to merge / clean up history | `/oh-my-claudecode:git-master` — atomic commits, rebase |
-
----
-
 ## Documentation Hygiene
 
-Changes affecting architecture, conventions, or project structure → **update `CLAUDE.md` and `README.md`**.
+Changes affecting architecture, conventions, or project structure → **update `CONVENTIONS.md`, `AGENTS.md`, and `README.md`**.
+
+Before ending any session with architectural or behavioural changes:
+- [ ] Update `CONVENTIONS.md`
+- [ ] Update `README.md`
+- [ ] Update `AGENTS.md` if invariants or hot files changed
+- [ ] Update `docs/runbooks/` if operational steps changed
 
 ---
 
@@ -200,6 +205,5 @@ Changes affecting architecture, conventions, or project structure → **update `
 |------|---------|
 | `src/` | [Main application source] |
 | `tests/` | [Test suite] |
-| `docs/` | [Documentation, TECHNICAL_DEBT.md] |
-| `.omc/` | OMC state — do not commit state files |
+| `docs/` | [Documentation, TECHNICAL_DEBT.md, runbooks, specs] |
 | `.husky/` | Git hooks |

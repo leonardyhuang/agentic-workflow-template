@@ -18,9 +18,31 @@ Guardrails are hard constraints, not suggestions. Violating this protocol is a s
 
 If you discover you have already edited production code before writing the test: **revert the edit** and start from step 1. "I already know the fix" is never a valid excuse to skip the regression test.
 
+## 🚨 Git Mutation Protocol (non-negotiable)
+
+No git mutation happens without explicit user instruction in the **current message**.
+
+**These do NOT authorize git mutations:**
+- "resume", "continue", "go ahead", "fix it"
+- "yes" (unless answering a specific "shall I commit?" question)
+- Silence or implied consent
+
+**Authorized phrases for committing:**
+- "commit this"
+- "commit and push"
+- "push to [branch]"
+- Explicit permission in response to a direct "shall I commit?" question
+
+**Before any `git add`, `git commit`, `git push`, branch, merge, rebase, reset, checkout:**
+1. State exactly what you intend to do and what files are affected.
+2. Wait for explicit confirmation.
+3. Only then execute.
+
+**Self-check:** If you are about to run a git command and the user did not explicitly ask for it in their last message → **halt**. Show the diff. Ask for permission.
+
 ---
 
-## 🚨 Simplicity & Surgical Guardrail (non-negotiable)
+## ⚠️ Simplicity & Surgical Guardrail
 
 No speculative abstractions. No "improving" adjacent code. Clean up only your own mess.
 
@@ -28,7 +50,7 @@ No speculative abstractions. No "improving" adjacent code. Clean up only your ow
 - If a refactor is not required for the current change, do not do it.
 - If you touch a file, leave it no worse than you found it — but do not expand scope to "fix" unrelated issues.
 
-## 🚨 Ambiguity Guardrail (tiered, non-negotiable)
+## 🚨 Ambiguity Guardrail (tiered)
 
 Guardrails are hard constraints, not suggestions. Violating this protocol is a session failure.
 
@@ -75,7 +97,7 @@ If there is a single most-reasonable interpretation, proceed with it and explici
 
 ---
 
-## Review Gates
+## ⚠️ Review Gates
 
 Machine-enforced in [`.husky/pre-commit`](./.husky/pre-commit). When adding a gate here, add the executable check to the hook too — and vice versa.
 
@@ -88,7 +110,7 @@ Add "Run review gates" as the final todo item before starting any task. Do not m
 
 ---
 
-## Key Invariants
+## ⚠️ Key Invariants
 
 Violations of these rules break production silently. Treat them as hard stops.
 
@@ -100,7 +122,7 @@ Violations of these rules break production silently. Treat them as hard stops.
 
 ---
 
-## Testing Discipline
+## ⚠️ Testing Discipline
 
 - **Regression first**: write the failing test *before* touching implementation.
 - **Extract-before-embed**: any logic needing unit tests must be extracted into an explicit-param pure function *before* being embedded inside an event listener / async callback / framework hook. Tests import it directly; never copy inline logic into tests.
@@ -108,7 +130,7 @@ Violations of these rules break production silently. Treat them as hard stops.
 
 ---
 
-## Git Discipline
+## ⚠️ Git Discipline
 
 > **Hard stops — no exceptions, no implicit authorisation:**
 > - Never commit or push without explicit instruction in the current message.
@@ -121,7 +143,7 @@ Violations of these rules break production silently. Treat them as hard stops.
 
 ---
 
-## Documentation Hygiene
+## ⚠️ Documentation Hygiene
 
 Before ending any session where architecture, contracts, key behaviours, or file responsibilities changed:
 
@@ -132,7 +154,7 @@ Before ending any session where architecture, contracts, key behaviours, or file
 
 ---
 
-## Proactive Skill Suggestions
+## 💡 Proactive Skill Suggestions
 
 Suggest these at natural moments without waiting to be asked:
 
@@ -148,7 +170,7 @@ Suggest these at natural moments without waiting to be asked:
 
 ---
 
-## Section Markers
+## 💡 Section Markers
 
 Major source files use `// #region <name>` / `// #endregion` (or language-appropriate equivalents) so agents navigate by region name, not line number.
 

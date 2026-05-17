@@ -27,11 +27,14 @@ No git mutation happens without explicit user instruction in the **current messa
 - "yes" (unless answering a specific "shall I commit?" question)
 - Silence or implied consent
 
-**Authorized phrases for committing:**
-- "commit this"
-- "commit and push"
-- "push to [branch]"
-- Explicit permission in response to a direct "shall I commit?" question
+**Authorized phrases:**
+| Action | Valid trigger |
+|--------|---------------|
+| `git add` / stage | "stage this", "add these files" |
+| `git commit` | "commit this", "commit with message X" |
+| `git push` | "push this", "push to [branch]", "commit and push" |
+
+**"Commit" alone does NOT authorize push.** They are separate mutations requiring separate confirmation.
 
 **Before any `git add`, `git commit`, `git push`, branch, merge, rebase, reset, checkout:**
 1. State exactly what you intend to do and what files are affected.

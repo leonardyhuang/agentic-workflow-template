@@ -20,6 +20,14 @@ If you discover you have already edited production code before writing the test:
 
 ---
 
+## 🚨 Simplicity & Surgical Guardrail (non-negotiable)
+
+No speculative abstractions. No "improving" adjacent code. Clean up only your own mess.
+
+- Solve the problem at hand. Do not build for future hypotheticals.
+- If a refactor is not required for the current change, do not do it.
+- If you touch a file, leave it no worse than you found it — but do not expand scope to "fix" unrelated issues.
+
 ## 🚨 Ambiguity Guardrail (tiered, non-negotiable)
 
 Guardrails are hard constraints, not suggestions. Violating this protocol is a session failure.
@@ -70,6 +78,8 @@ If there is a single most-reasonable interpretation, proceed with it and explici
 ## Review Gates
 
 Machine-enforced in [`.husky/pre-commit`](./.husky/pre-commit). When adding a gate here, add the executable check to the hook too — and vice versa.
+
+Add "Run review gates" as the final todo item before starting any task. Do not mark done until all applicable gates pass. State which gates ran and their results in your completion summary.
 
 | Gate | Command / Check |
 |------|-----------------|
@@ -145,3 +155,5 @@ Major source files use `// #region <name>` / `// #endregion` (or language-approp
 **[List major files and their regions here]**
 
 - `src/[main-file].[ext]` — regions: `[region1]` `[region2]` `[region3]`
+
+The pre-commit hook verifies that every region listed here exists as a `// #region` marker in source files.

@@ -23,6 +23,10 @@ your-project/
 │   └── pre-commit     — Generic pre-commit gates + stubs for your stack's gates
 ├── .agents/
 │   └── skills/        — Project-specific agent skills (model-agnostic)
+├── .github/
+│   └── pull_request_template.md  — PR checklist (docs, tests, gates, rollback)
+├── scripts/
+│   └── *.sh           — Automation: doc coverage, function coverage, stale docs
 ├── docs/
 │   ├── TECHNICAL_DEBT.md  — Unfixed findings from reviews
 │   ├── runbooks/          — Operational step-by-step guides

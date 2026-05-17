@@ -21,8 +21,9 @@ This project uses AI-assisted development. The primary agent instruction files a
 
 ### General
 
-- SOLID, DRY. Single Source of Truth — centralised helpers over duplicate/inline logic.
-- Intention-revealing names. Inline comments only for *why*, not *what*. JSDoc/docstrings for complex functions.
+- SOLID, DRY. Single Source of Truth — centralised helpers over duplicate/inline logic. Never inline what should call a shared helper.
+- Intention-revealing names. No cryptic abbreviations — `priceElement` not `priceEl`, `formField` not `ff`. Single-letter vars only in one-liner predicates.
+- Inline comments only for *why*, not *what*. JSDoc/docstrings for complex functions.
 - Small, single-purpose functions. Composition over inheritance.
 - Find root cause before proposing bug fixes.
 - No error handling, fallbacks, or validation for impossible scenarios. Trust internal code and framework guarantees. Validate at system boundaries only (user input, external APIs).
@@ -207,3 +208,5 @@ Before ending any session with architectural or behavioural changes:
 | `tests/` | [Test suite] |
 | `docs/` | [Documentation, TECHNICAL_DEBT.md, runbooks, specs] |
 | `.husky/` | Git hooks |
+| `.github/` | PR templates |
+| `scripts/` | Automation and verification scripts |

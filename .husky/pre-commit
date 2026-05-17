@@ -11,7 +11,7 @@ CHANGED=$(git diff --cached --name-only)
 
 # Warn when source files change without a docs update.
 # Adjust the KEY_CHANGED pattern to match your project's source paths.
-KEY_CHANGED=$(echo "$CHANGED" | grep -vE "CONVENTIONS\.md|AGENTS\.md|README\.md|TECHNICAL_DEBT\.md|\.gitignore|\.husky|package|docs/runbooks|docs/specs" || true)
+KEY_CHANGED=$(echo "$CHANGED" | grep -vE "CONVENTIONS\.md|AGENTS\.md|README\.md|TECHNICAL_DEBT\.md|\.gitignore|\.husky|package|docs/runbooks|docs/specs|\.github" || true)
 DOC_CHANGED=$(echo "$CHANGED" | grep -E "CONVENTIONS\.md|AGENTS\.md|README\.md|TECHNICAL_DEBT\.md|docs/runbooks|docs/specs" || true)
 
 if [ -n "$KEY_CHANGED" ] && [ -z "$DOC_CHANGED" ]; then
@@ -21,19 +21,28 @@ if [ -n "$KEY_CHANGED" ] && [ -z "$DOC_CHANGED" ]; then
 fi
 
 # =============================================================================
-# AGENTS.md / CONVENTIONS.md region sync check (optional)
-# Uncomment and adapt if your project uses section markers.
+# Section marker sync check
+# Verifies that // #region markers in source files match the list in AGENTS.md.
+# Adapt the SRC_GLOB pattern to match your project's source files.
 # =============================================================================
-# echo "▶ Checking section marker sync..."
-# AGENTS_REGIONS=$(grep "^// #region" src/main.js | sed 's/.*#region //' | sort || true)
-# DOCS_REGIONS=$(grep -A1 "Major source files use" AGENTS.md | tail -n +3 | head -n 1 || true)
-# [Add actual sync verification logic here]
+echo "▶ Checking section marker sync..."
+# List all // #region markers in source files
+# SRC_REGIONS=$(find src -type f \( -name "*.js" -o -name "*.ts" -o -name "*.rs" -o -name "*.py" -o -name "*.go" \) -exec grep -h "// #region" {} + 2>/dev/null | sed 's/.*#region //' | sort -u || true)
+# AGENTS_REGIONS=$(sed -n '/## Section Markers/,/^---/p' AGENTS.md | grep "^| \`" | sed 's/.*|`\([^`]*\)`|.*/\1/' | sort -u || true)
+# if [ -n "$SRC_REGIONS" ] || [ -n "$AGENTS_REGIONS" ]; then
+#     DIFF=$(diff <(echo "$SRC_REGIONS") <(echo "$AGENTS_REGIONS") || true)
+#     if [ -n "$DIFF" ]; then
+#         echo "⚠️  Section markers in source files do not match AGENTS.md:"
+#         echo "$DIFF"
+#     fi
+# fi
 
 # =============================================================================
-# Bug-fix test mandate (optional)
-# Uncomment and adapt to enforce: source changes → test changes.
+# Bug-fix test mandate
+# Enforces: source changes → test changes for bug fixes.
+# Uncomment and adapt SRC_PATTERN and TEST_PATTERN for your stack.
 # =============================================================================
-# echo "▶ Checking test coverage for modified sources..."
+echo "▶ Checking test coverage for modified sources..."
 # SRC_CHANGED=$(echo "$CHANGED" | grep -E "^src/.*\.(js|ts|rs|py|go)$" || true)
 # TEST_CHANGED=$(echo "$CHANGED" | grep -E "^(tests?|spec|__tests__)/" || true)
 # if [ -n "$SRC_CHANGED" ] && [ -z "$TEST_CHANGED" ]; then

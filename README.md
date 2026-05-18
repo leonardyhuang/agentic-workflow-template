@@ -28,6 +28,7 @@ your-project/
 ├── scripts/
 │   └── *.sh           — Automation: doc coverage, function coverage, stale docs
 ├── docs/
+│   ├── GLOSSARY.md        — Centralized domain term definitions
 │   ├── TECHNICAL_DEBT.md  — Unfixed findings from reviews
 │   ├── runbooks/          — Operational step-by-step guides
 │   └── specs/

@@ -109,6 +109,7 @@ Add "Run review gates" as the final todo item before starting any task. Do not m
 | Gate | Command / Check |
 |------|-----------------|
 | Documentation hygiene | Source changes → `CONVENTIONS.md` or `README.md` or `AGENTS.md` must also change |
+| Invariant checks | `scripts/check-invariants.sh` |
 | [Add your stack's gates] | [Add command] |
 
 ---

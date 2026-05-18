@@ -188,6 +188,32 @@ Catch drift accumulating across many small changes — add project-specific swee
 
 ---
 
+## Documentation Standards
+
+### Document by Contract, Not Implementation
+
+Docs describe inputs, outputs, and invariants — never variable names, line numbers, or step-by-step algorithms. Implementation changes; contracts should be stable.
+
+### Frontmatter for Runbooks and Guides
+
+All operational docs and runbooks should include:
+
+```yaml
+---
+title: ""
+description: ""
+lastReviewed: YYYY-MM-DD
+---
+```
+
+Review `lastReviewed` dates during periodic sweeps. Stale docs are a liability.
+
+### Glossary
+
+Centralize domain terms in [`docs/GLOSSARY.md`](./docs/GLOSSARY.md). Never define the same term in multiple docs — link to the glossary instead.
+
+---
+
 ## Documentation Hygiene
 
 Changes affecting architecture, conventions, or project structure → **update `CONVENTIONS.md`, `AGENTS.md`, and `README.md`**.

@@ -12,7 +12,7 @@ CHANGED=$(git diff --cached --name-only)
 # Warn when source files change without a docs update.
 # Adjust the KEY_CHANGED pattern to match your project's source paths.
 KEY_CHANGED=$(echo "$CHANGED" | grep -vE "CONVENTIONS\.md|AGENTS\.md|README\.md|TECHNICAL_DEBT\.md|\.gitignore|\.husky|package|docs/runbooks|docs/specs|\.github" || true)
-DOC_CHANGED=$(echo "$CHANGED" | grep -E "CONVENTIONS\.md|AGENTS\.md|README\.md|TECHNICAL_DEBT\.md|docs/runbooks|docs/specs" || true)
+DOC_CHANGED=$(echo "$CHANGED" | grep -E "CONVENTIONS\.md|AGENTS\.md|README\.md|TECHNICAL_DEBT\.md|GLOSSARY\.md|docs/runbooks|docs/specs" || true)
 
 if [ -n "$KEY_CHANGED" ] && [ -z "$DOC_CHANGED" ]; then
     echo "⚠️  Key source files changed without a CONVENTIONS.md / AGENTS.md / README.md update."

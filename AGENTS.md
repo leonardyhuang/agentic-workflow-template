@@ -79,6 +79,7 @@ If there is a single most-reasonable interpretation, proceed with it and explici
 |------|-----|
 | [`CONVENTIONS.md`](./CONVENTIONS.md) | Coding standards, architecture, review gates |
 | [`AGENTS.md`](./AGENTS.md) | This file — quick reference, invariants, skill map |
+| [`docs/GLOSSARY.md`](./docs/GLOSSARY.md) | Centralized domain term definitions |
 | [`docs/TECHNICAL_DEBT.md`](./docs/TECHNICAL_DEBT.md) | Unfixed findings from reviews |
 | [`docs/runbooks/`](./docs/runbooks/) | Operational step-by-step guides |
 | [`.agents/skills/`](./.agents/skills/) | Project-specific agent skills (model-agnostic) |

@@ -26,13 +26,14 @@ your-project/
 ├── .github/
 │   └── pull_request_template.md  — PR checklist (docs, tests, gates, rollback)
 ├── scripts/
-│   └── *.sh           — Automation: doc coverage, function coverage, stale docs
+│   └── *.sh           — Automation: doc coverage, function coverage, invariants
 ├── docs/
 │   ├── GLOSSARY.md        — Centralized domain term definitions
 │   ├── TECHNICAL_DEBT.md  — Unfixed findings from reviews
 │   ├── runbooks/          — Operational step-by-step guides
 │   └── specs/
 │       └── _template.md   — Spec template for new features
+├── .gitmessage        — Commit message template
 ```
 
 ---
@@ -83,9 +84,10 @@ This repository is designed for AI-assisted development:
 
 1. **AGENTS.md** is the first file any agent should read — it contains the bug-fix protocol, ambiguity guardrails, key invariants, and a skill suggestion map.
 2. **CONVENTIONS.md** contains the deep contract — architecture, coding standards, testing discipline, review gates.
-3. **docs/TECHNICAL_DEBT.md** accumulates unfixed findings from reviews.
-4. **docs/runbooks/** holds operational knowledge (debugging, deployment, common procedures).
-5. **.agents/skills/** stores project-specific skills that travel with the repo and work across AI tools (Kimi CLI, Claude Code, etc.).
+3. **docs/GLOSSARY.md** defines domain terms — link here instead of redefining in multiple docs.
+4. **docs/TECHNICAL_DEBT.md** accumulates unfixed findings from reviews.
+5. **docs/runbooks/** holds operational knowledge (debugging, deployment, common procedures).
+6. **.agents/skills/** stores project-specific skills that travel with the repo and work across AI tools (Kimi CLI, Claude Code, etc.).
 
 The pre-commit hook enforces documentation hygiene: if you change key source files, you must also update docs.
 

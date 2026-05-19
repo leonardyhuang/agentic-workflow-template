@@ -232,7 +232,8 @@ Before ending any session with architectural or behavioural changes:
 |------|---------|
 | `src/` | [Main application source] |
 | `tests/` | [Test suite] |
-| `docs/` | [Documentation, TECHNICAL_DEBT.md, runbooks, specs] |
+| `docs/` | [Documentation, GLOSSARY.md, TECHNICAL_DEBT.md, runbooks, specs] |
 | `.husky/` | Git hooks |
 | `.github/` | PR templates |
 | `scripts/` | Automation and verification scripts |
+| `.gitmessage` | Commit message template |

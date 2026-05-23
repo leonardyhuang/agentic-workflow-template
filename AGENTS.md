@@ -18,6 +18,8 @@ Guardrails are hard constraints, not suggestions. Violating this protocol is a s
 
 If you discover you have already edited production code before writing the test: **revert the edit** and start from step 1. "I already know the fix" is never a valid excuse to skip the regression test.
 
+---
+
 ## 🚨 Git Mutation Protocol (non-negotiable)
 
 No git mutation happens without explicit user instruction in the **current message**.
@@ -52,6 +54,8 @@ No speculative abstractions. No "improving" adjacent code. Clean up only your ow
 - Solve the problem at hand. Do not build for future hypotheticals.
 - If a refactor is not required for the current change, do not do it.
 - If you touch a file, leave it no worse than you found it — but do not expand scope to "fix" unrelated issues.
+
+---
 
 ## 🚨 Ambiguity Guardrail (tiered)
 
@@ -89,6 +93,8 @@ If there is a single most-reasonable interpretation, proceed with it and explici
 
 ## Key Commands
 
+> Fill these in for your stack. They are referenced by other guardrails.
+
 ```bash
 # [Primary dev command — e.g., npm run dev, cargo run, etc.]
 
@@ -98,6 +104,28 @@ If there is a single most-reasonable interpretation, proceed with it and explici
 
 # [Build for production]
 ```
+
+---
+
+## ⚠️ Security
+
+### Secrets & Credentials
+- NEVER hardcode secrets, API keys, tokens, or passwords in source code.
+- All secrets must come from environment variables or a config system.
+- NEVER log secrets, tokens, or full request/response bodies that may contain PII.
+
+### Input Validation
+- Validate and sanitize ALL user inputs before processing.
+- Reject unexpected types early with a proper error response — never let malformed data reach the database or business logic layer.
+- Never interpolate user input directly into query operators or raw SQL/NoSQL without sanitization.
+
+### Authorization
+- Always enforce ownership/permission checks before operating on resources.
+- Never expose internal IDs or stack traces in error responses.
+
+### Error Handling
+- Return structured error responses — never raw strings, HTML, or stack traces to the client.
+- For external API calls, implement timeout handling and log failures with context.
 
 ---
 
